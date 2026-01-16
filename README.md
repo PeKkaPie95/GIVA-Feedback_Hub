@@ -41,8 +41,10 @@ Create a virtual environment (optional but recommended)
 bash
 Copy code
 python -m venv env
-source env/bin/activate  # Linux/Mac
-env\Scripts\activate     # Windows
+# Linux/Mac
+source env/bin/activate
+# Windows
+env\Scripts\activate
 Install dependencies
 
 bash
@@ -95,3 +97,4 @@ Improve frontend charts and dashboard interactivity.
 
 License
 This project is for educational purposes and can be used or modified freely.
+
