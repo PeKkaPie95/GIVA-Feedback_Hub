@@ -1,95 +1,84 @@
 # Feedback Hub
 
-This repository contains **Feedback Hub**, a customer feedback analysis system developed for **Giva Jewelry**. The project enables users to submit product reviews, performs **rule-based sentiment analysis**, detects key product-related themes, and generates **actionable insights** displayed through a visual dashboard.
+**Feedback Hub** is a customer feedback analyzer built for **Giva Jewelry**. It allows users to submit product reviews, automatically analyzes sentiment using a rule-based approach, detects key themes, and displays insights on a dashboard with charts.
 
-The application is built using **Flask** for the backend and **HTML/JavaScript** for the frontend, with a strong emphasis on transparent logic, keyword-based rules, and careful handling of edge cases such as negations and star–sentiment mismatches.
-
----
-
-## Project Overview
-
-Feedback Hub is designed to help analyze customer reviews in a structured and interpretable manner. Instead of relying on black-box models, it uses **explicit rules and keyword mappings** to ensure clarity, explainability, and easy extensibility.
-
-The system processes user-submitted feedback to:
-- Classify sentiment
-- Detect recurring themes
-- Generate insights useful for product improvement and decision-making
+This project demonstrates careful attention to real-world feedback challenges and implements thoughtful solutions to improve accuracy and usability.
 
 ---
 
-## Key Features
+## Key Improvements & Attention to Detail
 
-### Feedback Submission
-- Users can submit product reviews with:
-  - A **1–5 star rating**
-  - A textual comment
+1. **Negation Handling**  
+   - Reviews with phrases like "not good" or "never comfortable" are correctly identified as negative, even if the words themselves are positive.
 
-### Rule-Based Sentiment Analysis
-- Classifies feedback as **Positive**, **Negative**, or **Neutral**
-- Uses expanded sentiment keyword lists
-- Correctly handles negations (e.g., *“not good”*, *“not comfortable”*)
+2. **Star Rating Adjustment**  
+   - Star ratings influence sentiment: a 3-star review with clearly negative text is counted as negative. This ensures alignment between numeric and textual feedback.
 
-### Theme Detection
-- Automatically categorizes reviews into predefined themes such as:
-  - Comfort
-  - Durability
-  - Appearance
-- Keyword-driven classification ensures consistent and interpretable results
+3. **Duplicate Review Detection**  
+   - Prevents identical reviews from skewing insights.
 
-### Insights Generator
-- Produces actionable insights including:
-  - Positive highlights
-  - Common negative issues
-  - Neutral trends
-  - Star rating vs sentiment mismatches
-- Weighted by severity and designed to remain informative even with limited data
+4. **Expanded Keyword Lists & Themes**  
+   - Positive and negative keyword lists are comprehensive.
+   - Reviews are categorized into themes such as Comfort, Durability, and Appearance for deeper insights.
 
-### Dashboard Visualization
-- Displays:
-  - Sentiment distribution
-  - Theme frequency counts
-- Uses charts for quick and intuitive understanding of customer feedback trends
+5. **Weighted Insights**  
+   - Insights are not just raw counts; they are weighted by review severity and star rating.
+   - Positive mentions are also tracked to balance recommendations.
+
+6. **Immediate Insight Generation**  
+   - Insights appear as soon as two reviews are submitted, even if neutral, ensuring the dashboard is always informative.
+
+7. **Multi-Word Phrase Detection**  
+   - Phrases like "not comfortable" are correctly interpreted to avoid misclassification.
+
+8. **Data-Driven Dashboard**  
+   - Displays sentiment distribution and theme counts with charts.
+   - Automatically refreshes after submission for immediate feedback.
+
+---
+
+## Features
+
+- **Feedback Submission**: Select a product, provide a rating (1–5), and write a review.
+- **Sentiment Analysis**: Positive, Negative, Neutral classification with star-rating adjustment.
+- **Theme Detection**: Categorizes reviews into Comfort, Durability, Appearance.
+- **Insights Generator**: Provides actionable insights including potential improvements and highlights positive feedback.
+- **Dashboard**: Pie and bar charts show sentiment distribution and theme counts for quick understanding.
 
 ---
 
 ## Project Structure
 
+```
 Feedback_hub/
-│── app.py # Flask backend
-│── requirements.txt # Python dependencies
-└── frontend/
-└── index.html # Frontend interface
+│-- app.py                  # Flask backend
+│-- requirements.txt        # Python dependencies
+└-- frontend/
+    └-- index.html          # Frontend interface
+```
 
 ---
 
 ## Installation
 
-### Clone the Repository
+1. **Clone the repository**
 
 ```bash
 git clone https://github.com/your-username/Feedback_hub.git
 cd Feedback_hub
 ```
 
-### Create a Virtual Environment (Recommended)
+2. **Create a virtual environment (optional but recommended)**
 
 ```bash
 python -m venv env
-```
-
-### Activate the Virtual Environment
-
-#### Linux / macOS
-```bash
+# Linux/Mac
 source env/bin/activate
-```
-
-#### Windows
-```bash
+# Windows
 env\Scripts\activate
 ```
 
-### Install Dependencies
+3. **Install dependencies**
 
 ```bash
 pip install -r requirements.txt
@@ -99,82 +88,54 @@ pip install -r requirements.txt
 
 ## Running the Project
 
-### Start the Backend
+1. **Start the Flask backend**
 
 ```bash
 python app.py
 ```
 
-The Flask server will start at:
+By default, it will run at `http://127.0.0.1:5000/`.
 
-```
-http://127.0.0.1:5000/
-```
+2. **Open the frontend**
 
-### Open the Frontend
-
-Open the following file in your browser:
-
-```
-frontend/index.html
-```
-
-You can now submit feedback, refresh the dashboard, and generate insights in real time.
+Open `frontend/index.html` in your browser. Submit feedback, view the dashboard, and generate insights instantly.
 
 ---
 
 ## Usage
 
-### Submit Feedback
-- Select a product  
-- Choose a star rating (1–5)  
-- Write a review  
-
-### Dashboard
-- Click **Refresh Dashboard** to view updated sentiment and theme charts  
-
-### Insights
-- Click **Generate Insights** to view summarized findings and recommendations  
+- **Submit Feedback**: Select a product, provide a rating (1–5), and write a review.
+- **Dashboard**: Click "Refresh Dashboard" to see sentiment distribution and theme counts.
+- **Insights**: Click "Generate Insights" to view actionable insights immediately.
 
 ---
 
-## Logic and Design Considerations
+## Dependencies
 
-### Sentiment Analysis
-- Keyword-based with negation handling  
-- Ensures interpretable and predictable classification  
-
-### Star Rating Adjustment
-- Star ratings influence sentiment interpretation  
-- Example: a clearly negative review with 3 stars is still treated as negative  
-
-### Theme Detection
-- Carefully curated keyword lists reduce misclassification  
-
-### Insights Generation
-- Includes positive, negative, and neutral signals  
-- Highlights inconsistencies between star ratings and textual sentiment  
-
----
-
-## Technologies Used
-- Python  
 - Flask  
 - Flask-CORS  
-- HTML, JavaScript  
-- Chart-based visualizations  
+
+Install all dependencies using:
+
+```bash
+pip install -r requirements.txt
+```
 
 ---
 
 ## Future Improvements
-- Expand keyword lists and multi-word phrase detection  
-- Improve insight weighting and reporting depth  
-- Enhance frontend dashboard interactivity and visuals  
+
+- Expand keyword lists further and include more multi-word phrases.
+- Enhance insights weighting and reporting (e.g., highlight trends over time).
+- Improve frontend interactivity and dashboard charts.
+- Consider storing feedback in a persistent database instead of in-memory storage.
 
 ---
 
 ## License
-This project is intended for educational purposes and may be freely used or modified.
+
+This project is for educational purposes and can be used or modified freely.
+
 
 
 
