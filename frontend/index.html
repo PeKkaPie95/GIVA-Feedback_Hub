@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Feedback Hub</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    select, input, textarea, button {
+      margin-top: 5px;
+      margin-bottom: 15px;
+      padding: 5px;
+      width: 300px;
+    }
+
+    textarea {
+      height: 80px;
+    }
+
+    #dashboard {
+      margin-top: 20px;
+    }
+
+    /* Controls pie chart size */
+    .chart-container {
+      width: 250px;
+      height: 250px;
+    }
+
+    canvas {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>Submit Feedback</h2>
+
+<select id="product">
+  <option value="ring">Ring</option>
+  <option value="earring">Earring</option>
+  <option value="necklace">Necklace</option>
+</select>
+
+<br>
+
+<input type="number" id="rating" min="1" max="5" placeholder="Rating (1-5)">
+
+<br>
+
+<textarea id="review" placeholder="Write your review here"></textarea>
+
+<br>
+
+<button id="submitBtn" onclick="submitFeedback()">Submit</button>
+<p id="status"></p>
+
+<hr>
+
+<h2>Dashboard</h2>
+
+<div id="dashboard">
+  <button onclick="loadDashboard()">Refresh Dashboard</button>
+  <p id="summary"></p>
+</div>
+
+<!-- Charts Layout -->
+<div style="display: flex; gap: 40px; align-items: center;">
+
+  <!-- Small Pie Chart -->
+  <div class="chart-container">
+    <canvas id="sentimentChart"></canvas>
+  </div>
+
+  <!-- Larger Bar Chart -->
+  <div style="width: 500px;">
+    <canvas id="themeChart"></canvas>
+  </div>
+
+</div>
+
+<hr>
+
+<h2>Insights</h2>
+<button onclick="loadInsights()">Generate Insights</button>
+<ul id="insights"></ul>
+
+<script>
+let sentimentChart, themeChart;
+
+/* Submit feedback */
+function submitFeedback() {
+  const btn = document.getElementById("submitBtn");
+  btn.disabled = true;
+
+  const product = document.getElementById("product").value;
+  const rating = document.getElementById("rating").value;
+  const review = document.getElementById("review").value;
+
+  if (!rating || !review) {
+    document.getElementById("status").innerText = "Please provide rating and review!";
+    btn.disabled = false;
+    return;
+  }
+
+  fetch("http://127.0.0.1:5000/feedback", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      product_id: product,
+      rating: rating,
+      review: review
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.error) {
+      document.getElementById("status").innerText = data.error;
+    } else {
+      document.getElementById("status").innerText = "Feedback submitted!";
+      document.getElementById("rating").value = "";
+      document.getElementById("review").value = "";
+      loadDashboard();
+    }
+    btn.disabled = false;
+  });
+}
+
+/* Load dashboard */
+function loadDashboard() {
+  const product = document.getElementById("product").value;
+
+  fetch(`http://127.0.0.1:5000/dashboard/${product}`)
+    .then(res => res.json())
+    .then(data => {
+      const s = data.sentiment_counts;
+      const t = data.theme_counts;
+
+      document.getElementById("summary").innerText =
+        `Positive: ${s.Positive} | Negative: ${s.Negative} | Neutral: ${s.Neutral}`;
+
+      renderCharts(s, t);
+    });
+}
+
+/* Load insights */
+function loadInsights() {
+  const product = document.getElementById("product").value;
+
+  fetch(`http://127.0.0.1:5000/insights/${product}`)
+    .then(res => res.json())
+    .then(data => {
+      let html = "";
+      data.forEach(i => html += `<li>${i}</li>`);
+      document.getElementById("insights").innerHTML = html;
+    });
+}
+
+/* Render charts */
+function renderCharts(sentimentData, themeData) {
+
+  // Pie Chart
+  const ctx1 = document.getElementById("sentimentChart").getContext("2d");
+  if (sentimentChart) sentimentChart.destroy();
+
+  sentimentChart = new Chart(ctx1, {
+    type: "pie",
+    data: {
+      labels: ["Positive", "Negative", "Neutral"],
+      datasets: [{
+        data: [
+          sentimentData.Positive,
+          sentimentData.Negative,
+          sentimentData.Neutral
+        ],
+        backgroundColor: ["#4CAF50", "#F44336", "#FFC107"]
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true
+    }
+  });
+
+  // Bar Chart
+  const ctx2 = document.getElementById("themeChart").getContext("2d");
+  if (themeChart) themeChart.destroy();
+
+  themeChart = new Chart(ctx2, {
+    type: "bar",
+    data: {
+      labels: Object.keys(themeData),
+      datasets: [{
+        label: "Theme Counts",
+        data: Object.values(themeData),
+        backgroundColor: "#2196F3"
+      }]
+    },
+    options: {
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+}
+
+/* Auto refresh */
+setInterval(loadDashboard, 3000);
+</script>
+
+</body>
+</html>
