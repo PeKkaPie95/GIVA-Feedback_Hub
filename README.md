@@ -60,107 +60,121 @@ Feedback_hub/
 └── frontend/
 └── index.html # Frontend interface
 
-yaml
-Copy code
-
 ---
 
 ## Installation
 
 ### Clone the Repository
+
 ```bash
 git clone https://github.com/your-username/Feedback_hub.git
 cd Feedback_hub
-Create a Virtual Environment (Recommended)
-bash
-Copy code
+```
+
+### Create a Virtual Environment (Recommended)
+
+```bash
 python -m venv env
+```
 
-# Linux / macOS
+### Activate the Virtual Environment
+
+#### Linux / macOS
+```bash
 source env/bin/activate
+```
 
-# Windows
+#### Windows
+```bash
 env\Scripts\activate
-Install Dependencies
-bash
-Copy code
+```
+
+### Install Dependencies
+
+```bash
 pip install -r requirements.txt
-Running the Project
-Start the Backend
-bash
-Copy code
+```
+
+---
+
+## Running the Project
+
+### Start the Backend
+
+```bash
 python app.py
+```
+
 The Flask server will start at:
 
-cpp
-Copy code
+```
 http://127.0.0.1:5000/
-Open the Frontend
+```
+
+### Open the Frontend
+
 Open the following file in your browser:
 
-bash
-Copy code
+```
 frontend/index.html
+```
+
 You can now submit feedback, refresh the dashboard, and generate insights in real time.
 
-Usage
-Submit Feedback
+---
 
-Select a product
+## Usage
 
-Choose a star rating (1–5)
+### Submit Feedback
+- Select a product  
+- Choose a star rating (1–5)  
+- Write a review  
 
-Write a review
+### Dashboard
+- Click **Refresh Dashboard** to view updated sentiment and theme charts  
 
-Dashboard
+### Insights
+- Click **Generate Insights** to view summarized findings and recommendations  
 
-Click “Refresh Dashboard” to view updated sentiment and theme charts
+---
 
-Insights
+## Logic and Design Considerations
 
-Click “Generate Insights” to view summarized findings and recommendations
+### Sentiment Analysis
+- Keyword-based with negation handling  
+- Ensures interpretable and predictable classification  
 
-Logic and Design Considerations
-Sentiment Analysis
+### Star Rating Adjustment
+- Star ratings influence sentiment interpretation  
+- Example: a clearly negative review with 3 stars is still treated as negative  
 
-Keyword-based with negation handling
+### Theme Detection
+- Carefully curated keyword lists reduce misclassification  
 
-Ensures interpretable and predictable classification
+### Insights Generation
+- Includes positive, negative, and neutral signals  
+- Highlights inconsistencies between star ratings and textual sentiment  
 
-Star Rating Adjustment
+---
 
-Star ratings influence sentiment interpretation
+## Technologies Used
+- Python  
+- Flask  
+- Flask-CORS  
+- HTML, JavaScript  
+- Chart-based visualizations  
 
-Example: a clearly negative review with 3 stars is still treated as negative
+---
 
-Theme Detection
+## Future Improvements
+- Expand keyword lists and multi-word phrase detection  
+- Improve insight weighting and reporting depth  
+- Enhance frontend dashboard interactivity and visuals  
 
-Carefully curated keyword lists reduce misclassification
+---
 
-Insights Generation
-
-Includes positive, negative, and neutral signals
-
-Highlights inconsistencies between star ratings and textual sentiment
-
-Technologies Used
-Python
-
-Flask
-
-Flask-CORS
-
-HTML, JavaScript
-
-Chart-based visualizations
-
-Future Improvements
-Expand keyword lists and multi-word phrase detection
-
-Improve insight weighting and reporting depth
-
-Enhance frontend dashboard interactivity and visuals
-
-License
+## License
 This project is intended for educational purposes and may be freely used or modified.
+
+
 
